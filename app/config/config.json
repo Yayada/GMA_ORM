@@ -1,0 +1,10 @@
+{
+    "DB_CONFIG":
+        {
+            "SGBD":"mysql",
+            "HOST":"localhost",
+            "USER":"root",
+            "PASS":"",
+            "BASE":"tp_framework"
+        }
+}

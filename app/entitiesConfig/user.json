@@ -1,0 +1,14 @@
+{
+    "tableName": "user",
+    "attributes": {
+        "id": {
+            "type": "int",
+            "length": "8",
+            "id": true
+        },
+        "exampleAttribute": {
+            "type": "string | int ...",
+            "length": "255"
+        }
+    }
+}
