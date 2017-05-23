@@ -5,7 +5,7 @@ class Model {
     private static $instance;
 
     private function __construct(){
-        $content = file_get_contents("../../app/config/config.json");
+        $content = file_get_contents(__DIR__."/../../app/config/config.json");
         $jsonConfig = json_decode($content,true);
         $dbString = $jsonConfig["DB_CONFIG"]["SGBD"].':host='.$jsonConfig["DB_CONFIG"]["HOST"].';dbname='.$jsonConfig["DB_CONFIG"]["BASE"];
         $this->db = new PDO($dbString,$jsonConfig["DB_CONFIG"]["USER"],$jsonConfig["DB_CONFIG"]["PASS"]);
@@ -16,4 +16,9 @@ class Model {
         return self::$instance;
     }
 
+    public function executeQuery($query){
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+    }
+    
 }
