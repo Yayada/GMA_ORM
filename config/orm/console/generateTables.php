@@ -14,6 +14,13 @@ foreach (glob("../../../app/entitiesConfig/*.json") as $filename) {
 
 function createTable ($tableName){
 
+    // Writing the class content
+    $classContent = "<?php \n class ".$tableName."{ \n\n ";
+    $constructorContent = 'public function __construct(';
+    $constructorInitContent="";
+    $getSetContent="";    
+    $class = fopen("../../../src/Entities/".$tableName.'.php','w');
+
     $model = Model::getInstance();
     
     // Get Table config file
@@ -40,11 +47,42 @@ function createTable ($tableName){
         }else{
             $query = $query . $attributeNames[$i]. " ".$table["attributes"][$attributeNames[$i]]["type"]."(".$table["attributes"][$attributeNames[$i]]["length"].") , ";
         }
+
+        // Create Attribute
+        $classContent = $classContent . " private $".$attributeNames[$i].";\n";
+        // Create Constructor
+            // check if we put comma after the attribute or not
+        if(count($table["attributes"]) - $i == 1){
+            $constructorContent = $constructorContent . '$'.$attributeNames[$i].'';        
+        }
+        else{
+            $constructorContent = $constructorContent . '$'.$attributeNames[$i].',';                    
+        }
+        $constructorInitContent = $constructorInitContent. '$this->'.$attributeNames[$i]." = $".$attributeNames[$i].";\n";        
+        // Create Getter and setter        
+        $upperAttr = ucfirst($attributeNames[$i]);
+        $getSetContent = $getSetContent.
+        ' public function set'.$upperAttr.'($'.$attributeNames[$i]."){
+             \n".' $this->'.$attributeNames[$i].' = $'.$attributeNames[$i].";\n 
+            }\n
+         public function get".$upperAttr."(){
+            \n".' return $this->'.$attributeNames[$i].";\n 
+            }
+        ";
     }
 
+    // Creating table
     $query = $query . " PRIMARY KEY (".$primaryKey.") )";
-
     $model->executeQuery($query);
+
+    // Creating Class
+    $constructorContent = $constructorContent ."){ \n". $constructorInitContent . "}";
+    $classContent = $classContent . $constructorContent . $getSetContent;
+    $classContent = $classContent . "};";
+
+    fwrite($class,$classContent);
+    fclose($class);    
 }
+
 
 
