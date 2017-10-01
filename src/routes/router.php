@@ -1,6 +1,6 @@
 <?php
     // Include the Router class    
-    require_once __DIR__.'/../../vendor/bramus/router/src/Bramus/Router/Router.php';
+    require_once __DIR__.'/../../vendor/bramus/router/src/Bramus/Router/Router.php';    
 
     // Create a Router
     $router = new \Bramus\Router\Router();
@@ -11,8 +11,10 @@
     });
 
     // Static route: / (homepage)
-    $router->get('/ya', function () {
-        echo 'tata';
+    $router->get('/test', function () {
+        require __DIR__.'/../Controllers/userController.php';
+        $c = new userController();
+        $c->getAllusers();
     });
 
     // Run    

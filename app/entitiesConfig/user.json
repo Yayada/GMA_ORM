@@ -1,0 +1,29 @@
+{
+    "tableName": "user",
+    "attributes": {
+        "id": {
+            "type": "int",
+            "length": "8",
+            "id": true
+        },
+        "nom": {
+            "type": "string",
+            "length": "255"
+        },
+        "email": {
+            "type": "string",
+            "length": "255"
+        },
+        "tel": {
+            "type": "string",
+            "length": "255"
+        }
+    },
+    "relations": {
+        "manytoone": {
+            "tableName": "role",
+            "columnName": "idr",
+            "referencedID": "id"
+        }
+    }
+}
